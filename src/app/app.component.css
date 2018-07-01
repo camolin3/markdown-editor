@@ -5,6 +5,9 @@ div {
   grid-template-columns: repeat(2, 50vw);
   overflow-x: hidden;
 }
+div > * {
+  padding: 2em 1em;
+}
 main {
   font-family: 'Courier New', Courier, monospace;
   background-color: antiquewhite;

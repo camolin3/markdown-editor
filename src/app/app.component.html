@@ -1,7 +1,5 @@
 <div>
-  <main contenteditable (keyup)="onKeyUp($event)">
+  <main contenteditable (keypress)="onKeyPress($event)" (paste)="onPaste($event)">
   </main>
-  <output>
-    {{result.join('')}}
-  </output>
+  <output [innerText]="resultString"></output>
 </div>
