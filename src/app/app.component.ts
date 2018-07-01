@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import * as MarkdownIt from 'markdown-it';
+import * as emoji from 'markdown-it-emoji';
+import * as twemoji from 'twemoji';
 
 @Component({
   selector: 'app-root',
@@ -34,6 +36,8 @@ export class AppComponent {
 
   get resultString() {
     const md = new MarkdownIt();
+    md.use(emoji);
+    md.renderer.rules.emoji = (token, idx) => twemoji.parse(token[idx].content);
     return md.render(this.result.join(''));
   }
 
