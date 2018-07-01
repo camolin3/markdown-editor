@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import * as MarkdownIt from 'markdown-it';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +33,8 @@ export class AppComponent {
   }
 
   get resultString() {
-    return this.result.join('');
+    const md = new MarkdownIt();
+    return md.render(this.result.join(''));
   }
 
   get cursor() {
