@@ -1,5 +1,4 @@
 <div>
-  <main contenteditable (keypress)="onKeyPress($event)" (paste)="onPaste($event)">
-  </main>
+  <main ace-editor [(text)]="result" [mode]="'markdown'" [theme]="'eclipse'"></main>
   <output [innerHTML]="resultString"></output>
 </div>
