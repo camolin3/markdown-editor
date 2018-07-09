@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 html {
   box-sizing: border-box;
+  font-family: arial,sans-serif;
+  font-weight: normal;
 }
 *, *:before, *:after {
   box-sizing: inherit;

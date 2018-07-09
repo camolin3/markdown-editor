@@ -1,10 +1,45 @@
+header {
+  position: fixed;
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  width: 100vw;
+  height: 4rem;
+  background-color: white;
+}
+header > span {
+  color: #18c062;
+  font-size: 3rem;
+  height: 4rem;
+  padding-left: 1rem;
+  padding-top: 0.3rem;
+  width: 4rem;
+}
+header > input {
+  border: 1px transparent solid;
+  font-size: 1.125rem;
+  margin: 0.7rem 0.4rem;
+  max-height: 1.5rem;
+  max-width: calc(50vw - 4rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+header > input:hover {
+  border-color: #e5e5e5;
+}
+header > input:focus {
+  border-color: #18c062;
+}
+header > input::placeholder {
+  font-style: italic;
+}
 div {
   background-color: #eeeeee;
-  height: 100vh;
-  width: 100%;
   display: grid;
-  grid-template-columns: 3vw repeat(2, 47vw) 3vw;
+  grid-template-columns: 5vw repeat(2, 45vw) 5vw;
+  height: 100vh;
   overflow-x: hidden;
+  padding-top: 4rem;
+  width: 100%;
 }
 main {
   margin-top: 1rem;

@@ -16,6 +16,7 @@ import * as twemoji from 'twemoji';
 })
 export class AppComponent implements AfterViewInit {
   @ViewChild(AceEditorDirective) ace: AceEditorDirective;
+  title = '';
   result = dedent`# Hello!
 
   This is an _online_ **Markdown** editor :v:.
@@ -48,9 +49,19 @@ export class AppComponent implements AfterViewInit {
   }
 
   get resultString() {
-    const md = new MarkdownIt();
+    const md = new MarkdownIt({
+      breaks: true,
+    });
     md.use(emoji);
     md.renderer.rules.emoji = (token, idx) => twemoji.parse(token[idx].content);
     return md.render(this.result);
+  }
+
+  onInputClicked({ target }) {
+    if (this.title) {
+      return;
+    }
+    this.title = this.result.split('\n', 1)[0] || 'Untitled document';
+    setTimeout(() => target.setSelectionRange(0, this.title.length));
   }
 }
