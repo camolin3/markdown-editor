@@ -3,6 +3,7 @@ import 'brace/ext/language_tools.js';
 import 'brace/index';
 import 'brace/mode/markdown';
 import 'brace/theme/eclipse';
+import firebase from 'firebase/app';
 import hljs from 'highlight.js';
 import * as MarkdownIt from 'markdown-it';
 import * as emoji from 'markdown-it-emoji';
@@ -41,12 +42,13 @@ export class AppComponent implements AfterViewInit {
     editor.renderer.setShowGutter(false);
     editor.renderer.setPadding(20);
     editor.renderer.setScrollMargin(20, 10);
-    editor.on('change', ({ action, start, lines }) => {
-      const pos = this.result.split('\n', start.row)
-        .map(l => l.length)
-        .reduce((acc, val) => acc + val, start.column + start.row);
-      console.log(action, JSON.stringify({ pos, lines }));
-    });
+
+    const config = {
+      apiKey: 'AIzaSyBK7k4vLvjRfJ2DOfzouMNAAgj9jwhQc4Y',
+      authDomain: 'markdown-editor-8412c.firebaseapp.com',
+      databaseURL: 'https://markdown-editor-8412c.firebaseio.com',
+    };
+    firebase.initializeApp(config);
   }
 
   get resultString() {
@@ -72,5 +74,18 @@ export class AppComponent implements AfterViewInit {
     }
     this.title = this.result.split('\n', 1)[0] || 'Untitled document';
     setTimeout(() => target.setSelectionRange(0, this.title.length));
+  }
+
+  getRef() {
+    let ref = firebase.database().ref();
+    const hash = window.location.hash.replace(/#/g, '');
+    if (hash) {
+      ref = ref.child(hash);
+    } else {
+      // generate unique location.
+      ref = ref.push();
+      window.location.href = window.location + '#' + ref.key;
+    }
+    return ref;
   }
 }
