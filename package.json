@@ -28,6 +28,7 @@
     "markdown-it-emoji": "^1.4.0",
     "ng2-ace-editor": "^0.3.8",
     "rxjs": "^6.0.0",
+    "ts-dedent": "^1.0.0",
     "twemoji": "^11.0.0",
     "zone.js": "^0.8.26"
   },

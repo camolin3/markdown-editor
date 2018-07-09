@@ -1,4 +1,10 @@
 <div>
-  <main ace-editor [(text)]="result" [mode]="'markdown'" [theme]="'eclipse'"></main>
+  <main
+    ace-editor
+    [(text)]="result"
+    [mode]="'markdown'"
+    [theme]="'eclipse'"
+    [options]="options"
+    ></main>
   <output [innerHTML]="resultString"></output>
 </div>
