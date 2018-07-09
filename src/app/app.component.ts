@@ -3,6 +3,7 @@ import 'brace/ext/language_tools.js';
 import 'brace/index';
 import 'brace/mode/markdown';
 import 'brace/theme/eclipse';
+import hljs from 'highlight.js';
 import * as MarkdownIt from 'markdown-it';
 import * as emoji from 'markdown-it-emoji';
 import { AceEditorDirective } from 'ng2-ace-editor';
@@ -51,6 +52,14 @@ export class AppComponent implements AfterViewInit {
   get resultString() {
     const md = new MarkdownIt({
       breaks: true,
+      highlight: (str, lng) => {
+        if (lng && hljs.getLanguage(lng)) {
+          try {
+            return hljs.highlight(lng, str).value;
+          } catch (e) {}
+        }
+        return '';
+      },
     });
     md.use(emoji);
     md.renderer.rules.emoji = (token, idx) => twemoji.parse(token[idx].content);
