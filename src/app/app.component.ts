@@ -1,9 +1,12 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import 'brace/ext/language_tools.js';
 import 'brace/index';
+import { Editor } from 'brace/index';
 import 'brace/mode/markdown';
 import 'brace/theme/eclipse';
-import firebase from 'firebase/app';
+import * as firebase from 'firebase/app';
+import 'firebase/database';
+import * as Firepad from 'firepad/dist/firepad';
 import hljs from 'highlight.js';
 import * as MarkdownIt from 'markdown-it';
 import * as emoji from 'markdown-it-emoji';
@@ -18,14 +21,9 @@ import * as twemoji from 'twemoji';
 })
 export class AppComponent implements AfterViewInit {
   @ViewChild(AceEditorDirective) ace: AceEditorDirective;
+  md: MarkdownIt.MarkdownIt;
   title = '';
-  result = dedent`# Hello!
-
-  This is an _online_ **Markdown** editor :v:.
-
-  Have some fun. Here you have a [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) ;).
-
-  `;
+  resultString: string;
   options = {
     indentedSoftWrap: true,
     printMargin: false,
@@ -33,15 +31,34 @@ export class AppComponent implements AfterViewInit {
   };
 
   constructor() {
+    this.md = (new MarkdownIt({
+      breaks: true,
+      highlight: (str, lng) => {
+        if (!lng || !hljs.getLanguage(lng)) {
+          return '';
+        }
+        try { return hljs.highlight(lng, str).value; } catch (e) { }
+      },
+    }));
+    this.md.use(emoji);
+    this.md.renderer.rules.emoji = (token, idx) => twemoji.parse(token[idx].content);
   }
 
   ngAfterViewInit() {
-    const editor = this.ace.editor;
+    const defaultText = dedent`# Hello!
+
+    This is an _online_ **Markdown** editor :v:.
+
+    Have some fun. Here you have a [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) ;).
+
+    `;
+    const editor: Editor = this.ace.editor;
     const session = editor.getSession();
     session.setUseWrapMode(true);
+    session.setUseWorker(false);
     editor.renderer.setShowGutter(false);
     editor.renderer.setPadding(20);
-    editor.renderer.setScrollMargin(20, 10);
+    (<any>editor.renderer).setScrollMargin(20, 10);
 
     const config = {
       apiKey: 'AIzaSyBK7k4vLvjRfJ2DOfzouMNAAgj9jwhQc4Y',
@@ -49,30 +66,21 @@ export class AppComponent implements AfterViewInit {
       databaseURL: 'https://markdown-editor-8412c.firebaseio.com',
     };
     firebase.initializeApp(config);
-  }
 
-  get resultString() {
-    const md = new MarkdownIt({
-      breaks: true,
-      highlight: (str, lng) => {
-        if (lng && hljs.getLanguage(lng)) {
-          try {
-            return hljs.highlight(lng, str).value;
-          } catch (e) {}
-        }
-        return '';
-      },
+    const firepadRef = this.getRef();
+    const firepad = Firepad.fromACE(firepadRef, editor, {
+      defaultText,
     });
-    md.use(emoji);
-    md.renderer.rules.emoji = (token, idx) => twemoji.parse(token[idx].content);
-    return md.render(this.result);
+    const onSync = () => this.resultString = this.md.render(firepad.getText());
+    firepad.on('ready', () => onSync() && editor.resize(true));
+    firepad.on('synced', onSync);
   }
 
   onInputClicked({ target }) {
     if (this.title) {
       return;
     }
-    this.title = this.result.split('\n', 1)[0] || 'Untitled document';
+    this.title = this.resultString.split('\n', 1)[0].match(/<\w+>(.*)<\/\w+>/)[1] || 'Untitled document';
     setTimeout(() => target.setSelectionRange(0, this.title.length));
   }
 

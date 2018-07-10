@@ -1,25 +1,29 @@
 header {
-  position: fixed;
-  display: grid;
-  grid-template-columns: 4rem 1fr;
-  width: 100vw;
-  height: 4rem;
+  --pad: 4rem;
   background-color: white;
+  border-bottom: 1px solid #e0e0e0;
+  display: grid;
+  grid-template-columns: var(--pad) 1fr;
+  height: var(--pad);
+  position: fixed;
+  width: 100vw;
+  z-index: 10;
 }
 header > span {
-  color: #18c062;
+  color: var(--active-color);
   font-size: 3rem;
-  height: 4rem;
+  height: var(--pad);
   padding-left: 1rem;
   padding-top: 0.3rem;
-  width: 4rem;
+  width: var(--pad);
 }
 header > input {
   border: 1px transparent solid;
   font-size: 1.125rem;
   margin: 0.7rem 0.4rem;
   max-height: 1.5rem;
-  max-width: calc(50vw - 4rem);
+  max-width: calc(50vw - var(--pad));
+  outline-color: transparent;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -27,13 +31,13 @@ header > input:hover {
   border-color: #e5e5e5;
 }
 header > input:focus {
-  border-color: #18c062;
+  border-color: var(--active-color);
 }
 header > input::placeholder {
   font-style: italic;
 }
 div {
-  background-color: #eeeeee;
+  background-color: var(--workspace-color);
   display: grid;
   grid-template-columns: 5vw repeat(2, 45vw) 5vw;
   height: 100vh;
@@ -41,10 +45,14 @@ div {
   padding-top: 4rem;
   width: 100%;
 }
-main {
+div::ng-deep .firepad {
   margin-top: 1rem;
   box-shadow: -1.5pt 0 0 0.75pt #d1d1d1, -1.5pt 0 3pt 0.75pt #ccc;
   grid-column: 2;
+  height: unset;
+}
+div::ng-deep .firepad .ace_editor {
+  height: 100%;
 }
 output {
   margin-top: 1rem;
