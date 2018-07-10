@@ -2,9 +2,10 @@
   "name": "markdown-editor",
   "version": "0.0.0",
   "scripts": {
+    "postinstall": "cd ./src/libs/firepad; npm i --ignore-scripts",
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --base-href /editor/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

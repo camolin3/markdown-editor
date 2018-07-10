@@ -1,6 +1,6 @@
 <header>
   <span class="ion ion-logo-markdown"></span>
-  <input [(ngModel)]="title" (click)="onInputClicked($event)" placeholder="Untitled document">
+  <input [(ngModel)]="title" (click)="onInputClicked($event)" (blur)="onInputBlur()" placeholder="Untitled document">
 </header>
 <div>
   <main

@@ -6,13 +6,13 @@ import 'brace/mode/markdown';
 import 'brace/theme/eclipse';
 import * as firebase from 'firebase/app';
 import 'firebase/database';
-import * as Firepad from 'firepad/dist/firepad';
 import hljs from 'highlight.js';
 import * as MarkdownIt from 'markdown-it';
 import * as emoji from 'markdown-it-emoji';
 import { AceEditorDirective } from 'ng2-ace-editor';
 import dedent from 'ts-dedent';
 import * as twemoji from 'twemoji';
+import * as Firepad from '../libs/firepad/dist/firepad';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +29,7 @@ export class AppComponent implements AfterViewInit {
     printMargin: false,
     wrapBehavioursEnabled: true,
   };
+  ref: firebase.database.Reference;
 
   constructor() {
     this.md = (new MarkdownIt({
@@ -67,13 +68,17 @@ export class AppComponent implements AfterViewInit {
     };
     firebase.initializeApp(config);
 
-    const firepadRef = this.getRef();
-    const firepad = Firepad.fromACE(firepadRef, editor, {
+    this.ref = this.getRef();
+    const firepad = Firepad.fromACE(this.ref, editor, {
       defaultText,
     });
     const onSync = () => this.resultString = this.md.render(firepad.getText());
     firepad.on('ready', () => onSync() && editor.resize(true));
     firepad.on('synced', onSync);
+
+    this.ref.child('metadata').once('value')
+      .then(snapshot => snapshot.val())
+      .then(({ title }) => this.title = title);
   }
 
   onInputClicked({ target }) {
@@ -82,6 +87,11 @@ export class AppComponent implements AfterViewInit {
     }
     this.title = this.resultString.split('\n', 1)[0].match(/<\w+>(.*)<\/\w+>/)[1] || 'Untitled document';
     setTimeout(() => target.setSelectionRange(0, this.title.length));
+  }
+
+  onInputBlur() {
+    const { title } = this;
+    this.ref.update({ metadata: { title }});
   }
 
   getRef() {
