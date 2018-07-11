@@ -22,6 +22,7 @@ import * as Firepad from '../libs/firepad/dist/firepad';
 export class AppComponent implements AfterViewInit {
   @ViewChild(AceEditorDirective) ace: AceEditorDirective;
   md: MarkdownIt.MarkdownIt;
+  loaded = false;
   title = '';
   resultString: string;
   options = {
@@ -73,7 +74,11 @@ export class AppComponent implements AfterViewInit {
       defaultText,
     });
     const onSync = () => this.resultString = this.md.render(firepad.getText());
-    firepad.on('ready', () => onSync() && editor.resize(true));
+    firepad.on('ready', () => {
+      this.loaded = true;
+      onSync();
+      editor.resize(true);
+    });
     firepad.on('synced', onSync);
 
     this.ref.child('metadata').once('value')

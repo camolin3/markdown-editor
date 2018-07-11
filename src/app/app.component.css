@@ -9,6 +9,9 @@ header {
   width: 100vw;
   z-index: 10;
 }
+header:not(.is-loaded) {
+  pointer-events: none;
+}
 header > span {
   color: var(--active-color);
   font-size: 3rem;
@@ -44,6 +47,20 @@ div {
   overflow-x: hidden;
   padding-top: 4rem;
   width: 100%;
+}
+header:not(.is-loaded) ~ div {
+  pointer-events: none;
+}
+header:not(.is-loaded) ~ div::after {
+  background-color: gray;
+  background-size: 4rem;
+  content: '';
+  height: 4rem;
+  left: calc(50% - 2rem);
+  mask: url('/assets/loading-bubbles.svg') no-repeat 50% 50%/100% 100%;
+  position: absolute;
+  top: 8rem;
+  width: 4rem;
 }
 div::ng-deep .firepad {
   margin-top: 1rem;
