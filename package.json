@@ -29,6 +29,7 @@
     "firebase": "^5.2.0",
     "highlight.js": "^9.12.0",
     "ionicons": "^4.2.4",
+    "javascript-time-ago": "^1.0.31",
     "markdown-it": "^8.4.1",
     "markdown-it-emoji": "^1.4.0",
     "ng2-ace-editor": "^0.3.8",

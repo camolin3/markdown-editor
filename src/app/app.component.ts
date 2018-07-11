@@ -7,12 +7,15 @@ import 'brace/theme/eclipse';
 import * as firebase from 'firebase/app';
 import 'firebase/database';
 import hljs from 'highlight.js';
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
 import * as MarkdownIt from 'markdown-it';
 import * as emoji from 'markdown-it-emoji';
 import { AceEditorDirective } from 'ng2-ace-editor';
 import dedent from 'ts-dedent';
 import * as twemoji from 'twemoji';
 import * as Firepad from '../libs/firepad/dist/firepad';
+TimeAgo.locale(en);
 
 @Component({
   selector: 'app-root',
@@ -22,6 +25,7 @@ import * as Firepad from '../libs/firepad/dist/firepad';
 export class AppComponent implements AfterViewInit {
   @ViewChild(AceEditorDirective) ace: AceEditorDirective;
   md: MarkdownIt.MarkdownIt;
+  lastModified;
   loaded = false;
   title = '';
   resultString: string;
@@ -31,6 +35,7 @@ export class AppComponent implements AfterViewInit {
     wrapBehavioursEnabled: true,
   };
   ref: firebase.database.Reference;
+  timeAgo;
 
   constructor() {
     this.md = (new MarkdownIt({
@@ -43,7 +48,14 @@ export class AppComponent implements AfterViewInit {
       },
     }));
     this.md.use(emoji);
-    this.md.renderer.rules.emoji = (token, idx) => twemoji.parse(token[idx].content);
+    const emojiToImage = (token, idx) => twemoji.parse(token[idx].content);
+    this.md.renderer.rules.emoji = emojiToImage;
+    this.timeAgo = new TimeAgo();
+  }
+
+  get lastModifiedAgo() {
+    return this.lastModified ?
+      `Last edit was ${this.timeAgo.format(this.lastModified)}` : '';
   }
 
   ngAfterViewInit() {
@@ -57,7 +69,6 @@ export class AppComponent implements AfterViewInit {
     const editor: Editor = this.ace.editor;
     const session = editor.getSession();
     session.setUseWrapMode(true);
-    session.setUseWorker(false);
     editor.renderer.setShowGutter(false);
     editor.renderer.setPadding(20);
     (<any>editor.renderer).setScrollMargin(20, 10);
@@ -84,13 +95,22 @@ export class AppComponent implements AfterViewInit {
     this.ref.child('metadata').once('value')
       .then(snapshot => snapshot.val())
       .then(({ title }) => this.title = title);
+
+    this.ref.child('history')
+      .orderByChild('t')
+      .limitToLast(1)
+      .on('child_added', snapshot => {
+        const timestamp = snapshot.val().t;
+        this.lastModified = new Date(timestamp);
+    });
   }
 
   onInputClicked({ target }) {
     if (this.title) {
       return;
     }
-    this.title = this.resultString.split('\n', 1)[0].match(/<\w+>(.*)<\/\w+>/)[1] || 'Untitled document';
+    const firstLine = this.resultString.split('\n', 1)[0].match(/>(.*)</)[1];
+    this.title = firstLine || 'Untitled document';
     setTimeout(() => target.setSelectionRange(0, this.title.length));
   }
 

@@ -1,6 +1,7 @@
 <header [class.is-loaded]="loaded">
   <span class="ion ion-logo-markdown"></span>
   <input [(ngModel)]="title" (click)="onInputClicked($event)" (blur)="onInputBlur()" placeholder="Untitled document">
+  <p>{{lastModifiedAgo}}</p>
 </header>
 <div>
   <main

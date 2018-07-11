@@ -3,7 +3,9 @@ header {
   background-color: white;
   border-bottom: 1px solid #e0e0e0;
   display: grid;
-  grid-template-columns: var(--pad) 1fr;
+  grid-template:
+    "logo title" 2rem
+    "logo timestamp" 2rem / 4rem minmax(min-content, 40%);
   height: var(--pad);
   position: fixed;
   width: 100vw;
@@ -15,17 +17,17 @@ header:not(.is-loaded) {
 header > span {
   color: var(--active-color);
   font-size: 3rem;
+  grid-area: logo;
   height: var(--pad);
-  padding-left: 1rem;
-  padding-top: 0.3rem;
+  padding: 0.3rem 0 0 1rem;
   width: var(--pad);
 }
 header > input {
   border: 1px transparent solid;
   font-size: 1.125rem;
-  margin: 0.7rem 0.4rem;
+  grid-area: title;
+  margin: 0.7rem 0.4rem 0 0;
   max-height: 1.5rem;
-  max-width: calc(50vw - var(--pad));
   outline-color: transparent;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -38,6 +40,13 @@ header > input:focus {
 }
 header > input::placeholder {
   font-style: italic;
+}
+header > p {
+  color: #777;
+  font-size: 0.8rem;
+  grid-area: timestamp;
+  margin: 0;
+  text-decoration: underline;
 }
 div {
   background-color: var(--workspace-color);
@@ -71,9 +80,13 @@ div::ng-deep .firepad {
 div::ng-deep .firepad .ace_editor {
   height: 100%;
 }
+div::ng-deep .firepad .ace_content {
+  height: 100% important!;
+}
 output {
   margin-top: 1rem;
-  background-color: #ededed;
+  background-color: white;
+  border-left: var(--active-color) 1pt solid;
   box-shadow: 1.5pt 0 0 0.75pt #d1d1d1, 1.5pt 0 3pt 0.75pt #ccc;
   font-family: Arial, Helvetica, sans-serif;
   grid-column: 3;
