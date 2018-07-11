@@ -4,8 +4,8 @@ header {
   border-bottom: 1px solid #e0e0e0;
   display: grid;
   grid-template:
-    "logo title" 2rem
-    "logo timestamp" 2rem / 4rem minmax(min-content, 40%);
+    "logo title     users" 2rem
+    "logo timestamp users" 2rem / 4rem minmax(min-content, 40%) 1fr;
   height: var(--pad);
   position: fixed;
   width: 100vw;
@@ -41,12 +41,29 @@ header > input:focus {
 header > input::placeholder {
   font-style: italic;
 }
-header > p {
+header > p:nth-of-type(1) {
   color: #777;
   font-size: 0.8rem;
   grid-area: timestamp;
   margin: 0;
   text-decoration: underline;
+}
+header > p:nth-of-type(2) {
+  grid-area: users;
+  padding-right: 1.5rem;
+  text-align: end;
+}
+header > p:nth-of-type(2) span {
+  background-color: grey;
+  border-radius: 50%;
+  display: inline-flex;
+  height: 2rem;
+  width: 2rem;
+}
+header > p:nth-of-type(2) span::ng-deep .emoji {
+  filter: brightness(0) invert(1);
+  left: calc(50% - .5em);
+  top: calc(50% - .5em);
 }
 div {
   background-color: var(--workspace-color);

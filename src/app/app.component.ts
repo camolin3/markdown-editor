@@ -24,6 +24,39 @@ TimeAgo.locale(en);
 })
 export class AppComponent implements AfterViewInit {
   @ViewChild(AceEditorDirective) ace: AceEditorDirective;
+  colors = {
+    Navy: '#001f3f',
+    Blue: '#0074D9',
+    Aqua: '#7FDBFF',
+    Teal: '#39CCCC',
+    Olive: '#3D9970',
+    Green: '#2ECC40',
+    Lime: '#01FF70',
+    Yellow: '#FFDC00',
+    Orange: '#FF851B',
+    Red: '#FF4136',
+    Maroon: '#85144b',
+    Fuchsia: '#F012BE',
+    Purple: '#B10DC9',
+    Black: '#111111',
+    Gray: '#AAAAAA',
+    Silver: '#DDDDDD',
+  };
+  emojis = {
+    '🐒': 'Monkey',
+    '🐤': 'Chicken',
+    '🦆': 'Duck',
+    '🦉': 'Owl',
+    '🦇': 'Bat',
+    '🦄': 'Unicorn',
+    '🦋': 'Butterfly',
+    '🐙': 'Octopus',
+    '🕷': 'Spider',
+    '🐳': 'Whale',
+    '🐀': 'Rat',
+    '🦎': 'Lizard',
+  };
+  firepad;
   md: MarkdownIt.MarkdownIt;
   lastModified;
   loaded = false;
@@ -36,6 +69,7 @@ export class AppComponent implements AfterViewInit {
   };
   ref: firebase.database.Reference;
   timeAgo;
+  users: Array<{ color: string, alias: string, name: string }>;
 
   constructor() {
     this.md = (new MarkdownIt({
@@ -81,16 +115,16 @@ export class AppComponent implements AfterViewInit {
     firebase.initializeApp(config);
 
     this.ref = this.getRef();
-    const firepad = Firepad.fromACE(this.ref, editor, {
+    this.firepad = Firepad.fromACE(this.ref, editor, {
       defaultText,
     });
-    const onSync = () => this.resultString = this.md.render(firepad.getText());
-    firepad.on('ready', () => {
+    const onSync = () => this.resultString = this.md.render(this.firepad.getText());
+    this.firepad.on('synced', onSync);
+    this.firepad.on('ready', () => {
       this.loaded = true;
       onSync();
       editor.resize(true);
     });
-    firepad.on('synced', onSync);
 
     this.ref.child('metadata').once('value')
       .then(snapshot => snapshot.val())
@@ -103,6 +137,35 @@ export class AppComponent implements AfterViewInit {
         const timestamp = snapshot.val().t;
         this.lastModified = new Date(timestamp);
     });
+
+    this.ref.child('users')
+      .on('value', snapshot => {
+        const users = snapshot.val();
+        const objToNumber = (obj) => JSON.stringify(obj)
+          .split('')
+          .reduce((acc, c) => acc + c.charCodeAt(0), 0);
+        const colorList = Object.keys(this.colors);
+        const colorNameFromObject = color => {
+          const number = objToNumber(color) % colorList.length;
+          return colorList[number];
+        };
+        const emojiList = Object.keys(this.emojis);
+        const emojiFromColor = (color, offset = 0) => {
+          const number = (objToNumber(color) + offset) % emojiList.length;
+          return emojiList[number];
+        };
+        const imageFromEmoji = someEmoji => twemoji.parse(someEmoji);
+        this.users = Object.values<{ color: string }>(users)
+        .map((user, i) => {
+          const newColor = colorNameFromObject(user);
+          const someEmoji = emojiFromColor(newColor, i);
+          return {
+            color: this.colors[newColor],
+            alias: imageFromEmoji(someEmoji),
+            name: newColor + ' ' + this.emojis[someEmoji],
+          };
+        });
+      });
   }
 
   onInputClicked({ target }) {
