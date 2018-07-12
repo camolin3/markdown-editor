@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import 'brace/ext/language_tools.js';
 import 'brace/index';
 import { Editor } from 'brace/index';
@@ -60,7 +61,7 @@ export class AppComponent implements AfterViewInit {
   md: MarkdownIt.MarkdownIt;
   lastModified;
   loaded = false;
-  title = '';
+  _title = '';
   resultString: string;
   options = {
     indentedSoftWrap: true,
@@ -71,7 +72,9 @@ export class AppComponent implements AfterViewInit {
   timeAgo;
   users: Array<{ color: string, alias: string, name: string, userId: string }>;
 
-  constructor() {
+  constructor(
+    private titleService: Title,
+  ) {
     this.md = (new MarkdownIt({
       breaks: true,
       highlight: (str, lng) => {
@@ -85,6 +88,12 @@ export class AppComponent implements AfterViewInit {
     const emojiToImage = (token, idx) => twemoji.parse(token[idx].content);
     this.md.renderer.rules.emoji = emojiToImage;
     this.timeAgo = new TimeAgo();
+  }
+
+  get title() { return this._title; }
+  set title(newTitle: string) {
+    this.titleService.setTitle(`${newTitle} − Markdown Editor`);
+    this._title = newTitle;
   }
 
   get lastModifiedAgo() {
