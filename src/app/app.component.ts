@@ -69,7 +69,7 @@ export class AppComponent implements AfterViewInit {
   };
   ref: firebase.database.Reference;
   timeAgo;
-  users: Array<{ color: string, alias: string, name: string }>;
+  users: Array<{ color: string, alias: string, name: string, userId: string }>;
 
   constructor() {
     this.md = (new MarkdownIt({
@@ -141,7 +141,7 @@ export class AppComponent implements AfterViewInit {
     this.ref.child('users')
       .on('value', snapshot => {
         const users = snapshot.val();
-        const objToNumber = (obj) => JSON.stringify(obj)
+        const objToNumber = obj => JSON.stringify(obj)
           .split('')
           .reduce((acc, c) => acc + c.charCodeAt(0), 0);
         const colorList = Object.keys(this.colors);
@@ -155,11 +155,12 @@ export class AppComponent implements AfterViewInit {
           return emojiList[number];
         };
         const imageFromEmoji = someEmoji => twemoji.parse(someEmoji);
-        this.users = Object.values<{ color: string }>(users)
-        .map((user, i) => {
-          const newColor = colorNameFromObject(user);
+        this.users = Object.entries<{ color: string }>(users)
+        .map(([userId], i) => {
+          const newColor = colorNameFromObject(userId);
           const someEmoji = emojiFromColor(newColor, i);
           return {
+            userId,
             color: this.colors[newColor],
             alias: imageFromEmoji(someEmoji),
             name: newColor + ' ' + this.emojis[someEmoji],

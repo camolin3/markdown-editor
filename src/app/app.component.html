@@ -3,7 +3,7 @@
   <input [(ngModel)]="title" (click)="onInputClicked($event)" (blur)="onInputBlur()" placeholder="Untitled document">
   <p title="All changes are saved on Firebase">{{lastModifiedAgo}}</p>
   <p>
-    <span *ngFor="let user of users" [style.background-color]="user.color" [innerHTML]="user.alias" [title]="user.name"></span>
+    <span *ngFor="let user of users; trackBy:user?.userId" [style.background-color]="user.color" [innerHTML]="user.alias" [title]="user.name"></span>
   </p>
 </header>
 <div>
