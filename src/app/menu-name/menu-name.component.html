@@ -1,6 +1,6 @@
-<div class="menu-name" [class.control-open]="opened" (click)="onClick()">
+<div class="menu-name" [class.control-open]="open" (click)="onClick()" (mouseenter)="onHoverEnter()">
   {{name}}
 </div>
-<div class="menu-items" (click)="onClick()">
+<div class="menu-items">
   <ng-content></ng-content>
 </div>

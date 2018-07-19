@@ -1,6 +1,7 @@
 :host {
   cursor: default;
   position: relative;
+  user-select: none;
 }
 .menu-name {
   border: 0.06rem solid transparent;
