@@ -1,0 +1,6 @@
+<div class="menu-name" [class.control-open]="opened" (click)="onClick()">
+  {{name}}
+</div>
+<div class="menu-items" (click)="onClick()">
+  <ng-content></ng-content>
+</div>

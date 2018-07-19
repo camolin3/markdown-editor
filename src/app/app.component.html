@@ -1,12 +1,36 @@
 <header [class.is-loaded]="loaded">
-  <span class="ion ion-logo-markdown"></span>
-  <input [(ngModel)]="title" (click)="onInputClicked($event)" (blur)="onInputBlur()" placeholder="Untitled document">
-  <p title="All changes are saved on Firebase">{{lastModifiedAgo}}</p>
-  <p>
+  <span class="logo ion ion-logo-markdown"></span>
+  <input class="title" [(ngModel)]="title" (click)="onInputClicked($event)" (blur)="onInputBlur()" placeholder="Untitled document">
+  <div class="menu">
+    <app-menu-name name="File">
+      <app-menu-item>New document</app-menu-item>
+      <app-menu-item>Print</app-menu-item>
+    </app-menu-name>
+    <app-menu-name name="Format">
+      <app-menu-item>Headers</app-menu-item>
+      <app-menu-item>Bold</app-menu-item>
+      <app-menu-item>Italics</app-menu-item>
+      <app-menu-item>Strike</app-menu-item>
+      <app-menu-item>Strikethrough</app-menu-item>
+      <app-menu-item>List</app-menu-item>
+      <app-menu-item>Code</app-menu-item>
+      <app-menu-item>Quote</app-menu-item>
+    </app-menu-name>
+    <app-menu-name name="Insert">
+      <app-menu-item>Link...</app-menu-item>
+      <app-menu-item>Line</app-menu-item>
+      <app-menu-item>Image</app-menu-item>
+    </app-menu-name>
+    <app-menu-name name="Help">
+      <app-menu-item>About...</app-menu-item>
+    </app-menu-name>
+    <p title="All changes are saved on Firebase">{{lastModifiedAgo}}</p>
+  </div>
+  <div class="connected-users">
     <span *ngFor="let user of users; trackBy:user?.userId" [style.background-color]="user.color" [innerHTML]="user.alias" [title]="user.name"></span>
-  </p>
+  </div>
 </header>
-<div>
+<div class="workplace">
   <main
     ace-editor
     [mode]="'markdown'"

@@ -1,0 +1,8 @@
+:host {
+  cursor: pointer;
+  min-width: max-content;
+  padding: .31rem 1rem .44rem 2rem;
+}
+:host:hover {
+  background-color: #eee;
+}

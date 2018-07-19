@@ -1,0 +1,39 @@
+:host {
+  cursor: default;
+  position: relative;
+}
+.menu-name {
+  border: 0.06rem solid transparent;
+  outline: none;
+  padding: .19rem .44rem .31rem;
+  position: relative;
+  z-index: 1;
+}
+.menu-name:hover {
+  background-color: #eee;
+  border-color: #eee;
+}
+.menu-name.control-open {
+  background-color: #fff;
+  border-bottom: none;
+  border-color: rgba(0, 0, 0, .2);
+}
+.menu-items {
+  align-items: stretch;
+  background-color: #fff;
+  border: 0.06rem solid #ccc;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  display: none;
+  flex-direction: column;
+  left: 0;
+  min-width: max-content;
+  padding: .6rem 0;
+  position: absolute;
+  top: 97%;
+}
+.menu-name.control-open ~ .menu-items {
+  display: flex;
+}
+.menu-items > app-menu-item {
+  flex-basis: 4rem;
+}

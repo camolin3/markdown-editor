@@ -1,20 +1,20 @@
-header {
+:host > header {
   --pad: 4rem;
   background-color: white;
   border-bottom: 1px solid #e0e0e0;
   display: grid;
   grid-template:
     "logo title     users" 2rem
-    "logo timestamp users" 2rem / 4rem minmax(min-content, 40%) 1fr;
+    "logo timestamp users" 2rem / 4rem 1fr minmax(min-content, 11rem);
   height: var(--pad);
   position: fixed;
   width: 100vw;
   z-index: 10;
 }
-header:not(.is-loaded) {
+:host > header:not(.is-loaded) {
   pointer-events: none;
 }
-header > span {
+:host > header > .logo {
   color: var(--active-color);
   font-size: 3rem;
   grid-area: logo;
@@ -22,7 +22,7 @@ header > span {
   padding: 0.3rem 0 0 1rem;
   width: var(--pad);
 }
-header > input {
+:host > header > .title {
   border: 1px transparent solid;
   font-size: 1.125rem;
   grid-area: title;
@@ -30,91 +30,97 @@ header > input {
   max-height: 1.5rem;
   outline-color: transparent;
   overflow: hidden;
+  padding-left: .3rem;
   text-overflow: ellipsis;
 }
-header > input:hover {
+:host > header > .title:hover {
   border-color: #e5e5e5;
 }
-header > input:focus {
+:host > header > .title:focus {
   border-color: var(--active-color);
 }
-header > input::placeholder {
+:host > header > .title::placeholder {
   font-style: italic;
 }
-header > p:nth-of-type(1) {
-  color: #777;
+:host > header > .menu {
+  align-items: baseline;
+  display: flex;
   font-size: 0.8rem;
   grid-area: timestamp;
-  margin: 0;
+}
+:host > header > .menu p {
+  color: #777;
+  margin: 0 1rem;
   text-decoration: underline;
 }
-header > p:nth-of-type(2) {
+:host > header > .connected-users {
+  align-self: center;
   display: grid;
   grid-area: users;
   grid-template-columns: 1fr repeat(11, 1rem);
   padding-right: 1.5rem;
 }
-header > p:nth-of-type(2) span {
+:host > header > .connected-users span {
   background-color: grey;
   border-radius: 50%;
   height: 2rem;
   width: 2rem;
 }
-header > p:nth-of-type(2) span:nth-child(-n+11) {
+:host > header > .connected-users span:nth-child(-n+11) {
   display: none;
 }
-header > p:nth-of-type(2) span:nth-last-child(1) {
+:host > header > .connected-users span:nth-last-child(1) {
   display: block;
   grid-column: 11 / 12;
   z-index: 11;
 }
-header > p:nth-of-type(2) span:nth-last-child(2) {
+:host > header > .connected-users span:nth-last-child(2) {
   display: block;
   grid-column: 10 / 11;
   z-index: 10;
 }
-header > p:nth-of-type(2) span:nth-last-child(3) {
+:host > header > .connected-users span:nth-last-child(3) {
   display: block;
   grid-column: 9 / 10;
   z-index: 9;
 }
-header > p:nth-of-type(2) span:nth-last-child(4) {
+:host > header > .connected-users span:nth-last-child(4) {
   display: block;
   grid-column: 8 / 9;
   z-index: 8;
 }
-header > p:nth-of-type(2) span:nth-last-child(5) {
+:host > header > .connected-users span:nth-last-child(5) {
   display: block;
   grid-column: 7 / 8;
   z-index: 7;
 }
-header > p:nth-of-type(2) span:nth-last-child(6) {
+:host > header > .connected-users span:nth-last-child(6) {
   display: block;
   grid-column: 6 / 7;
   z-index: 6;
 }
-header > p:nth-of-type(2) span:nth-last-child(7) {
+:host > header > .connected-users span:nth-last-child(7) {
   display: block;
   grid-column: 5 / 6;
   z-index: 5;
 }
-header > p:nth-of-type(2) span:nth-last-child(8) {
+:host > header > .connected-users span:nth-last-child(8) {
   display: block;
   grid-column: 4 / 5;
   z-index: 4;
 }
-header > p:nth-of-type(2) span:nth-last-child(9) {
+:host > header > .connected-users span:nth-last-child(9) {
   display: block;
   grid-column: 3 / 4;
   z-index: 3;
 }
-header > p:nth-of-type(2) span:nth-last-child(10) {
+:host > header > .connected-users span:nth-last-child(10) {
   display: block;
   grid-column: 2 / 3;
   position: relative;
   z-index: 2;
 }
-header > p:nth-of-type(2) span:nth-last-child(10)::after {
+:host > header > .connected-users span:nth-last-child(10)::after {
   color: gray;
   content: '+10';
   font-size: 0.9rem;
@@ -122,12 +128,12 @@ header > p:nth-of-type(2) span:nth-last-child(10)::after {
   right: 120%;
   top: 20%;
 }
-header > p:nth-of-type(2) span::ng-deep .emoji {
+:host > header > .connected-users span::ng-deep .emoji {
   filter: brightness(0) invert(1);
   left: calc(50% - .5em);
   top: calc(50% - .5em);
 }
-div {
+.workplace {
   background-color: var(--workspace-color);
   display: grid;
   grid-template-columns: 5vw repeat(2, 45vw) 5vw;
@@ -136,11 +142,11 @@ div {
   padding-top: 4rem;
   width: 100%;
 }
-header:not(.is-loaded) ~ div {
+header:not(.is-loaded) ~ .workplace {
   pointer-events: none;
 }
-header:not(.is-loaded) ~ div::after {
-  background-color: gray;
+header:not(.is-loaded) ~ .workplace::after {
+  background-color: #cccc;
   background-size: 4rem;
   content: '';
   height: 4rem;
@@ -150,19 +156,19 @@ header:not(.is-loaded) ~ div::after {
   top: 8rem;
   width: 4rem;
 }
-div::ng-deep .firepad {
+.workplace::ng-deep > .firepad {
   margin-top: 1rem;
   box-shadow: -1.5pt 0 0 0.75pt #d1d1d1, -1.5pt 0 3pt 0.75pt #ccc;
   grid-column: 2;
   height: unset;
 }
-div::ng-deep .firepad .ace_editor {
+.workplace::ng-deep > .firepad .ace_editor {
   height: 100%;
 }
-div::ng-deep .firepad .ace_content {
+.workplace::ng-deep > .firepad .ace_content {
   height: 100% important!;
 }
-output {
+.workplace > output {
   margin-top: 1rem;
   background-color: white;
   border-left: var(--active-color) 1pt solid;
@@ -171,6 +177,11 @@ output {
   grid-column: 3;
   padding: 0 1.25rem;
 }
-output::ng-deep a {
+.workplace > output::ng-deep a {
   color: darkblue;
+}
+@media (max-width: 600px) {
+  :host > header > .menu > app-menu-name {
+    display: none;
+  }
 }
