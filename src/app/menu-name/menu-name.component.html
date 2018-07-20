@@ -1,4 +1,8 @@
-<div class="menu-name" [class.control-open]="open" (click)="onClick()" (mouseenter)="onHoverEnter()">
+<div
+  class="menu-name"
+  [class.control-open]="open"
+  (mouseenter)="onHoverEnter($event)"
+  >
   {{name}}
 </div>
 <div class="menu-items">

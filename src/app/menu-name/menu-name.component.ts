@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-menu-name',
@@ -8,19 +8,22 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class MenuNameComponent implements OnInit {
   @Input() name: string;
   @Input() open = false;
-  @Output() hover = new EventEmitter<[MenuNameComponent, MouseEvent]>();
-  @Output() click = new EventEmitter<[MenuNameComponent, MouseEvent]>();
+  @Output() hovered = new EventEmitter<[MenuNameComponent, MouseEvent]>();
+  @Output() clicked = new EventEmitter<[MenuNameComponent, MouseEvent]>();
   constructor() { }
 
   ngOnInit() {
   }
 
-  onClick(event) {
-    this.click.emit([this, event]);
+  @HostListener('click', ['$event'])
+  onClick(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.clicked.emit([this, event]);
   }
 
-  onHoverEnter(event) {
-    this.hover.emit([this, event]);
+  onHoverEnter(event: MouseEvent) {
+    this.hovered.emit([this, event]);
   }
 
 }

@@ -137,7 +137,11 @@ export class AppComponent implements AfterViewInit {
 
     this.ref.child('metadata').once('value')
       .then(snapshot => snapshot.val())
-      .then(({ title }) => this.title = title);
+      .then((val) => {
+        if (val && 'title' in val) {
+          this.title = val.title;
+        }
+      });
 
     this.ref.child('history')
       .orderByChild('t')
