@@ -4,14 +4,14 @@
   <div class="menu">
     <app-menu-dropdown>
       <app-menu-name name="File">
-        <app-menu-item>New document</app-menu-item>
-        <app-menu-item>Print</app-menu-item>
+        <app-menu-item (click)="openNewDocument()">New document</app-menu-item>
+        <app-menu-item (click)="print()"><span class="ion ion-md-print"></span>Print</app-menu-item>
       </app-menu-name>
       <app-menu-name name="Format">
         <app-menu-item>Headers</app-menu-item>
         <app-menu-item>Bold</app-menu-item>
         <app-menu-item>Italics</app-menu-item>
-        <app-menu-item>Strike</app-menu-item>
+        <app-menu-item>Underline</app-menu-item>
         <app-menu-item>Strikethrough</app-menu-item>
         <app-menu-item>List</app-menu-item>
         <app-menu-item>Code</app-menu-item>

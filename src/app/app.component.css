@@ -185,3 +185,19 @@ header:not(.is-loaded) ~ .workplace::after {
     display: none;
   }
 }
+@media print {
+  header > span,
+  header > .menu,
+  header > .connected-users {
+    display: none !important;
+  }
+  .workplace {
+    background-color: white;
+    grid-template-columns: 0 repeat(2, 50%) 0;
+    height: unset;
+  }
+  .workplace > div,
+  .workplace > output, {
+    box-shadow: none;
+  }
+}
