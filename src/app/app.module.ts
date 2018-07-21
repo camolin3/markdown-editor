@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { MenuItemComponent } from './menu-item/menu-item.component';
 import { MenuNameComponent } from './menu-name/menu-name.component';
 import { MenuDropdownComponent } from './menu-dropdown/menu-dropdown.component';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { MenuDropdownComponent } from './menu-dropdown/menu-dropdown.component';
     MenuNameComponent,
     MenuItemComponent,
     MenuDropdownComponent,
+    MenuComponent,
   ],
   imports: [
     BrowserModule,

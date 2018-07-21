@@ -208,13 +208,4 @@ export class AppComponent implements AfterViewInit {
     }
     return ref;
   }
-
-  openNewDocument() {
-    const url = window.location.href.split('#')[0];
-    window.open(url, '_blank');
-  }
-
-  print() {
-    window.print();
-  }
 }
