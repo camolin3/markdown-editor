@@ -11,6 +11,7 @@ import { CodemirrorComponent } from 'ng2-codemirror';
 import dedent from 'ts-dedent';
 import * as twemoji from 'twemoji';
 import * as Firepad from '../libs/firepad/dist/firepad';
+import { MenuComponent } from './menu/menu.component';
 TimeAgo.locale(en);
 
 @Component({
@@ -19,6 +20,7 @@ TimeAgo.locale(en);
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
+  @ViewChild(MenuComponent) menu: MenuComponent;
   @ViewChild(CodemirrorComponent) cm: CodemirrorComponent;
   colors = {
     Navy: '#001f3f',
@@ -109,6 +111,7 @@ export class AppComponent implements AfterViewInit {
 
     `;
     const editor = this.cm.instance;
+    this.menu.cm = editor;
     const config = {
       apiKey: 'AIzaSyBK7k4vLvjRfJ2DOfzouMNAAgj9jwhQc4Y',
       authDomain: 'markdown-editor-8412c.firebaseapp.com',

@@ -15,12 +15,13 @@
   pointer-events: none;
 }
 :host > header > .logo {
+  --size: 3rem;
   color: var(--active-color);
-  font-size: 3rem;
+  font-size: var(--size);
   grid-area: logo;
-  height: var(--pad);
+  height: var(--size);
   padding: 0.3rem 0 0 1rem;
-  width: var(--pad);
+  width: var(--size);
 }
 :host > header > .title {
   border: 1px transparent solid;

@@ -1,9 +1,9 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { MenuComponent } from './menu.component';
+import { MenuDropdownComponent } from '../menu-dropdown/menu-dropdown.component';
 import { MenuItemComponent } from '../menu-item/menu-item.component';
 import { MenuNameComponent } from '../menu-name/menu-name.component';
-import { MenuDropdownComponent } from '../menu-dropdown/menu-dropdown.component';
+import { MenuComponent } from './menu.component';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -17,6 +17,7 @@ describe('MenuComponent', () => {
         MenuDropdownComponent,
         MenuComponent,
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
@@ -49,15 +50,15 @@ describe('MenuComponent', () => {
     });
   });
 
-  describe('formatToggleBold', () => {
-    it('should add **', () => {
-      expect(component.formatToggleBold('hello')).toBe('**hello**');
+  describe('formatToggle', () => {
+    it('should add bold.', () => {
+      expect(component.formatToggle('hello', '**', '**')).toBe('**hello**');
     });
 
-    it('should remove existing **', () => {
-      expect(component.formatToggleBold('**hello**')).toBe('hello');
-      expect(component.formatToggleBold('  **hello** ')).toBe('hello');
-      expect(component.formatToggleBold('  **hello *world*** ')).toBe('hello *world*');
+    it('should remove existing bold.', () => {
+      expect(component.formatToggle('**hello**', '**', '**')).toBe('hello');
+      expect(component.formatToggle('  **hello** ', '**', '**')).toBe('  hello ');
+      expect(component.formatToggle('  **hello *world*** ', '**', '**')).toBe('  hello *world* ');
     });
   });
 });

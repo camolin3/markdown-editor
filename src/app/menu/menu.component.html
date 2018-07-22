@@ -1,15 +1,13 @@
 <app-menu-dropdown>
   <app-menu-name name="File">
     <app-menu-item (click)="openNewDocument()">New document</app-menu-item>
-    <app-menu-item (click)="print()">
-      <span class="ion ion-md-print"></span>Print</app-menu-item>
+    <app-menu-item (click)="print()" iconName="print">Print</app-menu-item>
   </app-menu-name>
   <app-menu-name name="Format">
     <app-menu-item>Headers</app-menu-item>
-    <app-menu-item>Bold</app-menu-item>
-    <app-menu-item>Italics</app-menu-item>
-    <app-menu-item>Underline</app-menu-item>
-    <app-menu-item>Strikethrough</app-menu-item>
+    <app-menu-item (click)="toggleBold()" iconSrc="/assets/ic_format_bold_18px.svg">Bold</app-menu-item>
+    <app-menu-item (click)="toggleItalic()" iconSrc="/assets/ic_format_italic_18px.svg">Italics</app-menu-item>
+    <app-menu-item (click)="toggleStrikethrough()" iconSrc="/assets/ic_format_strikethrough_18px.svg">Strikethrough</app-menu-item>
     <app-menu-item>List</app-menu-item>
     <app-menu-item>Code</app-menu-item>
     <app-menu-item>Quote</app-menu-item>

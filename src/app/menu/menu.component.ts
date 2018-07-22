@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import * as escapeForRegex from 'escape-string-regexp';
 
 @Component({
   selector: 'app-menu',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
+  @Input() cm;
   global: Window;
   constructor() {
     this.global = window;
@@ -23,13 +25,32 @@ export class MenuComponent implements OnInit {
     this.global.print();
   }
 
-  formatToggleBold(str: string) {
-    const beforeRegex = /^\s*\*{2}/;
-    const afterRegex = /\*{2}\s*$/;
-    if (beforeRegex.test(str) && afterRegex.test(str)) {
-      return str.replace(beforeRegex, '').replace(afterRegex, '');
+  toggleBold() {
+    this.genericToggle('**', '**');
+  }
+
+  toggleItalic() {
+    this.genericToggle('_', '_');
+  }
+
+  toggleStrikethrough() {
+    this.genericToggle('~~', '~~');
+  }
+
+  genericToggle(before: string, after: string) {
+    const original = this.cm.getSelection();
+    const changed = this.formatToggle(original, before, after);
+    this.cm.replaceSelection(changed, 'around');
+  }
+
+  formatToggle(str: string, before: string, after: string) {
+    const regBefore = escapeForRegex(before);
+    const regAfter = escapeForRegex(after);
+    const regex = new RegExp(`^(\\s*)(${regBefore})(.*)(${regAfter})(\\s*$)`);
+    if (regex.test(str)) {
+      return str.replace(regex, '$1$3$5');
     }
-    return `**${str}**`;
+    return before + str + after;
   }
 
 }

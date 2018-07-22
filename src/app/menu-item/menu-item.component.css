@@ -6,9 +6,9 @@
 :host:hover {
   background-color: #eee;
 }
-:host::ng-deep span:first-child {
+:host::ng-deep ion-icon:first-child {
   color: #666;
-  font-size: 1rem;
   left: 0.65rem;
+  padding-top: 0.1rem;
   position: absolute;
 }
