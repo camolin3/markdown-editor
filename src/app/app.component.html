@@ -10,11 +10,6 @@
   </div>
 </header>
 <div class="workplace">
-  <main
-    ace-editor
-    [mode]="'markdown'"
-    [theme]="'eclipse'"
-    [options]="options"
-    ></main>
+  <codemirror [config]="codemirrorConfig"></codemirror>
   <output [innerHTML]="resultString"></output>
 </div>

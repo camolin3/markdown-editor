@@ -156,17 +156,11 @@ header:not(.is-loaded) ~ .workplace::after {
   top: 8rem;
   width: 4rem;
 }
-.workplace::ng-deep > .firepad {
+.workplace > codemirror {
   margin-top: 1rem;
   box-shadow: -1.5pt 0 0 0.75pt #d1d1d1, -1.5pt 0 3pt 0.75pt #ccc;
   grid-column: 2;
   height: unset;
-}
-.workplace::ng-deep > .firepad .ace_editor {
-  height: 100%;
-}
-.workplace::ng-deep > .firepad .ace_content {
-  height: 100% important!;
 }
 .workplace > output {
   margin-top: 1rem;
@@ -181,8 +175,27 @@ header:not(.is-loaded) ~ .workplace::after {
   color: darkblue;
 }
 @media (max-width: 600px) {
-  :host > header > .menu > app-menu-name {
+  :host > header > .menu > app-menu {
     display: none;
+  }
+  :host > header {
+    grid-template-columns: 4rem 1fr minmax(min-content, 5.5rem);
+  }
+  :host > header > .connected-users {
+    grid-template-columns: 1fr repeat(11, .5rem);
+  }
+  :host > header > .menu > p {
+    margin: 0 0 0 .4rem;
+  }
+  .workplace {
+    grid-template-columns: 0 repeat(2, 50%) 0;
+  }
+  .workplace > codemirror {
+    margin-top: .2rem;
+  }
+  .workplace > output {
+    margin-top: .2rem;
+    padding: 0 1rem;
   }
 }
 @media print {
@@ -195,8 +208,9 @@ header:not(.is-loaded) ~ .workplace::after {
     background-color: white;
     grid-template-columns: 0 repeat(2, 50%) 0;
     height: unset;
+    min-height: 100vh;
   }
-  .workplace > div,
+  .workplace > codemirror,
   .workplace > output, {
     box-shadow: none;
   }

@@ -1,10 +1,5 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import 'brace/ext/language_tools.js';
-import 'brace/index';
-import { Editor } from 'brace/index';
-import 'brace/mode/markdown';
-import 'brace/theme/eclipse';
 import * as firebase from 'firebase/app';
 import 'firebase/database';
 import hljs from 'highlight.js';
@@ -12,7 +7,7 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import * as MarkdownIt from 'markdown-it';
 import * as emoji from 'markdown-it-emoji';
-import { AceEditorDirective } from 'ng2-ace-editor';
+import { CodemirrorComponent } from 'ng2-codemirror';
 import dedent from 'ts-dedent';
 import * as twemoji from 'twemoji';
 import * as Firepad from '../libs/firepad/dist/firepad';
@@ -24,7 +19,7 @@ TimeAgo.locale(en);
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  @ViewChild(AceEditorDirective) ace: AceEditorDirective;
+  @ViewChild(CodemirrorComponent) cm: CodemirrorComponent;
   colors = {
     Navy: '#001f3f',
     Blue: '#0074D9',
@@ -57,17 +52,21 @@ export class AppComponent implements AfterViewInit {
     '🐀': 'Rat',
     '🦎': 'Lizard',
   };
+  codemirrorConfig = {
+    mode: {
+      name: 'gfm',
+    },
+    tabSize: 2,
+    lineNumbers: true,
+    theme: 'default',
+    lineWrapping: true,
+  };
   firepad;
   md: MarkdownIt.MarkdownIt;
   lastModified;
   loaded = false;
   _title = '';
   resultString: string;
-  options = {
-    indentedSoftWrap: true,
-    printMargin: false,
-    wrapBehavioursEnabled: true,
-  };
   ref: firebase.database.Reference;
   timeAgo;
   users: Array<{ color: string, alias: string, name: string, userId: string }>;
@@ -109,13 +108,7 @@ export class AppComponent implements AfterViewInit {
     Have some fun. Here you have a [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) ;).
 
     `;
-    const editor: Editor = this.ace.editor;
-    const session = editor.getSession();
-    session.setUseWrapMode(true);
-    editor.renderer.setShowGutter(false);
-    editor.renderer.setPadding(20);
-    (<any>editor.renderer).setScrollMargin(20, 10);
-
+    const editor = this.cm.instance;
     const config = {
       apiKey: 'AIzaSyBK7k4vLvjRfJ2DOfzouMNAAgj9jwhQc4Y',
       authDomain: 'markdown-editor-8412c.firebaseapp.com',
@@ -124,7 +117,7 @@ export class AppComponent implements AfterViewInit {
     firebase.initializeApp(config);
 
     this.ref = this.getRef();
-    this.firepad = Firepad.fromACE(this.ref, editor, {
+    this.firepad = Firepad.fromCodeMirror(this.ref, editor, {
       defaultText,
     });
     const onSync = () => this.resultString = this.md.render(this.firepad.getText());
@@ -132,7 +125,6 @@ export class AppComponent implements AfterViewInit {
     this.firepad.on('ready', () => {
       this.loaded = true;
       onSync();
-      editor.resize(true);
     });
 
     this.ref.child('metadata').once('value')
@@ -150,24 +142,26 @@ export class AppComponent implements AfterViewInit {
         const timestamp = snapshot.val().t;
         this.lastModified = new Date(timestamp);
     });
-
     this.ref.child('users')
       .on('value', snapshot => {
         const users = snapshot.val();
+
+        const colorList = Object.keys(this.colors);
+        const emojiList = Object.keys(this.emojis);
+
         const objToNumber = obj => JSON.stringify(obj)
           .split('')
           .reduce((acc, c) => acc + c.charCodeAt(0), 0);
-        const colorList = Object.keys(this.colors);
         const colorNameFromObject = color => {
           const number = objToNumber(color) % colorList.length;
           return colorList[number];
         };
-        const emojiList = Object.keys(this.emojis);
         const emojiFromColor = (color, offset = 0) => {
           const number = (objToNumber(color) + offset) % emojiList.length;
           return emojiList[number];
         };
         const imageFromEmoji = someEmoji => twemoji.parse(someEmoji);
+
         this.users = Object.entries<{ color: string }>(users)
         .map(([userId], i) => {
           const newColor = colorNameFromObject(userId);
