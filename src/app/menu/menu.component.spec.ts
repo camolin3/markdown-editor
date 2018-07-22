@@ -15,7 +15,7 @@ describe('MenuComponent', () => {
         MenuItemComponent,
         MenuNameComponent,
         MenuDropdownComponent,
-        MenuComponent
+        MenuComponent,
       ],
     })
     .compileComponents();
@@ -25,9 +25,39 @@ describe('MenuComponent', () => {
     fixture = TestBed.createComponent(MenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    const globalMock = jasmine.createSpyObj('window', ['open', 'print']);
+    globalMock.location = { href: 'https://markdown.ml/editor/#-LHApkuIG7feTomeAW2Q' };
+    component.global = <Window>globalMock;
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('openNewDocument', () => {
+    it('opens a new tab.', () => {
+      component.openNewDocument();
+      expect(component.global.open).toHaveBeenCalledWith('https://markdown.ml/editor/', '_blank');
+    });
+  });
+
+  describe('print', () => {
+    it('call native method.', () => {
+      component.print();
+      expect(component.global.print).toHaveBeenCalled();
+    });
+  });
+
+  describe('formatToggleBold', () => {
+    it('should add **', () => {
+      expect(component.formatToggleBold('hello')).toBe('**hello**');
+    });
+
+    it('should remove existing **', () => {
+      expect(component.formatToggleBold('**hello**')).toBe('hello');
+      expect(component.formatToggleBold('  **hello** ')).toBe('hello');
+      expect(component.formatToggleBold('  **hello *world*** ')).toBe('hello *world*');
+    });
   });
 });
