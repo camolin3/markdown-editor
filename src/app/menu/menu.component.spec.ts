@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MenuComponent } from './menu.component';
+import { MenuItemComponent } from '../menu-item/menu-item.component';
+import { MenuNameComponent } from '../menu-name/menu-name.component';
+import { MenuDropdownComponent } from '../menu-dropdown/menu-dropdown.component';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -8,7 +11,12 @@ describe('MenuComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MenuComponent ]
+      declarations: [
+        MenuItemComponent,
+        MenuNameComponent,
+        MenuDropdownComponent,
+        MenuComponent
+      ],
     })
     .compileComponents();
   }));

@@ -57,7 +57,7 @@ export class AppComponent implements AfterViewInit {
       name: 'gfm',
     },
     tabSize: 2,
-    lineNumbers: true,
+    autofocus: true,
     theme: 'default',
     lineWrapping: true,
   };
