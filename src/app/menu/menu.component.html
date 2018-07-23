@@ -8,9 +8,9 @@
     <app-menu-item (click)="toggleBold()" iconSrc="/assets/bold.svg">Bold</app-menu-item>
     <app-menu-item (click)="toggleItalic()" iconSrc="/assets/italic.svg">Italics</app-menu-item>
     <app-menu-item (click)="toggleStrikethrough()" iconSrc="/assets/strikethrough.svg">Strikethrough</app-menu-item>
-    <app-menu-item>List</app-menu-item>
-    <app-menu-item>Code</app-menu-item>
-    <app-menu-item>Quote</app-menu-item>
+    <app-menu-item (click)="toggleList()">List</app-menu-item>
+    <app-menu-item (click)="toggleCode()">Code</app-menu-item>
+    <app-menu-item (click)="toggleQuote()">Quote</app-menu-item>
   </app-menu-name>
   <app-menu-name name="Insert">
     <app-menu-item (click)="insertLink()" iconSrc="/assets/link.svg">Link</app-menu-item>

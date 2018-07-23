@@ -49,6 +49,18 @@ export class MenuComponent implements OnInit {
     this.genericToggle('~~', '~~');
   }
 
+  toggleList() {
+    this.genericToggle('\n1. ', '\n');
+  }
+
+  toggleCode() {
+    this.genericToggle('\n```typescript\n', '\n```\n');
+  }
+
+  toggleQuote() {
+    this.genericToggle('\n> ', '\n');
+  }
+
   genericToggle(before: string, after: string) {
     const original = this.cm.getSelection();
     const changed = this.formatToggle(original, before, after);

@@ -175,6 +175,28 @@ header:not(.is-loaded) ~ .workplace::after {
 .workplace > output::ng-deep a {
   color: darkblue;
 }
+.workplace > output::ng-deep code {
+  background-color: #eaeaea;
+  border-radius: .5rem;
+  display: block;
+  padding: 1rem;
+  padding-top: .2rem;
+}
+.workplace > output::ng-deep blockquote {
+  border: #eaeaea 1pt solid;
+  border-radius: .5rem;
+  display: block;
+  margin: 0;
+  padding: .2rem 1rem 1rem 3rem;
+  position: relative;
+}
+.workplace > output::ng-deep blockquote::before {
+  color: #ccc;
+  content: '“';
+  font-size: 4rem;
+  left: 1rem;
+  position: absolute;
+}
 @media (max-width: 600px) {
   :host > header > .menu > app-menu {
     display: none;
