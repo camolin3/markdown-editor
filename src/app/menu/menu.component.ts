@@ -25,6 +25,18 @@ export class MenuComponent implements OnInit {
     this.global.print();
   }
 
+  insertLink() {
+    this.cm.replaceSelection('[link](https://gooogle.com/)');
+  }
+
+  insertLine() {
+    this.cm.replaceSelection('\n---\n');
+  }
+
+  insertImage() {
+    this.cm.replaceSelection('\n![img description](https://78.media.tumblr.com/avatar_f27f604004a0_128.png)\n');
+  }
+
   toggleBold() {
     this.genericToggle('**', '**');
   }
