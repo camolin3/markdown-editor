@@ -7,8 +7,8 @@
   background-color: #eee;
 }
 :host::ng-deep ion-icon:first-child {
-  color: #666;
-  left: 0.65rem;
-  padding-top: 0.1rem;
+  color: #999;
+  left: 0.4rem;
   position: absolute;
+  font-size: 1.125rem;
 }

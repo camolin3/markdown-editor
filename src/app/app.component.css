@@ -169,7 +169,7 @@ header:not(.is-loaded) ~ .workplace::after {
   background-color: white;
   border-left: var(--active-color) 1pt solid;
   box-shadow: 1.5pt 0 0 0.75pt #d1d1d1, 1.5pt 0 3pt 0.75pt #ccc;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
   grid-column: 3;
   padding: 0 1.25rem;
 }
@@ -178,7 +178,7 @@ header:not(.is-loaded) ~ .workplace::after {
   border-bottom: var(--lineColor) 1px solid;
 }
 .workplace > output::ng-deep a {
-  color: darkblue;
+  color: #0366d6;
 }
 .workplace > output::ng-deep code {
   background-color: #eaeaea;
