@@ -49,6 +49,21 @@ export class MenuComponent implements OnInit {
     this.genericToggle('~~', '~~');
   }
 
+  toggleHeader() {
+    const { line } = this.cm.getCursor();
+    const { text } = this.cm.getLineHandle(line);
+    const regex = /^(#{1,6})\s/;
+    if (!regex.test(text)) {
+      return this.genericToggle('# ', '');
+    }
+    const currentNumber = text.match(regex)[1].length;
+    const nextNumber = Math.max(1, (currentNumber + 1) % 7);
+    const prefix = '#'.repeat(nextNumber);
+
+    this.cm.setSelection({ line, ch: 0 }, { line, ch: currentNumber });
+    this.cm.replaceSelection(prefix);
+  }
+
   toggleList() {
     this.genericToggle('1. ', '');
   }
