@@ -164,6 +164,7 @@ header:not(.is-loaded) ~ .workplace::after {
   height: unset;
 }
 .workplace > output {
+  --lineColor: #aaa;
   margin-top: 1rem;
   background-color: white;
   border-left: var(--active-color) 1pt solid;
@@ -172,29 +173,33 @@ header:not(.is-loaded) ~ .workplace::after {
   grid-column: 3;
   padding: 0 1.25rem;
 }
+.workplace > output::ng-deep h1,
+.workplace > output::ng-deep h2 {
+  border-bottom: var(--lineColor) 1px solid;
+}
 .workplace > output::ng-deep a {
   color: darkblue;
 }
 .workplace > output::ng-deep code {
   background-color: #eaeaea;
-  border-radius: .5rem;
+  border-radius: .1rem;
   display: block;
   padding: 1rem;
-  padding-top: .2rem;
 }
 .workplace > output::ng-deep blockquote {
-  border: #eaeaea 1pt solid;
+  border: var(--lineColor) 1pt solid;
   border-radius: .5rem;
   display: block;
   margin: 0;
-  padding: .2rem 1rem 1rem 3rem;
+  padding: .2rem 1rem .2rem 3rem;
   position: relative;
 }
 .workplace > output::ng-deep blockquote::before {
-  color: #ccc;
+  color: var(--lineColor);
   content: '“';
+  font-family: serif;
   font-size: 4rem;
-  left: 1rem;
+  left: .7rem;
   position: absolute;
 }
 @media (max-width: 600px) {
@@ -234,7 +239,7 @@ header:not(.is-loaded) ~ .workplace::after {
     min-height: 100vh;
   }
   .workplace > codemirror,
-  .workplace > output, {
+  .workplace > output {
     box-shadow: none;
   }
 }

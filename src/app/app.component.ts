@@ -41,18 +41,18 @@ export class AppComponent implements AfterViewInit {
     Silver: '#DDDDDD',
   };
   emojis = {
-    '🐒': 'Monkey',
-    '🐤': 'Chicken',
-    '🦆': 'Duck',
-    '🦉': 'Owl',
-    '🦇': 'Bat',
-    '🦄': 'Unicorn',
-    '🦋': 'Butterfly',
-    '🐙': 'Octopus',
-    '🕷': 'Spider',
-    '🐳': 'Whale',
-    '🐀': 'Rat',
-    '🦎': 'Lizard',
+    'Monkey': '🐒',
+    'Chicken': '🐤',
+    'Duck': '🦆',
+    'Owl': '🦉',
+    'Bat': '🦇',
+    'Unicorn': '🦄',
+    'Butterfly': '🦋',
+    'Octopus': '🐙',
+    'Spider': '🕷',
+    'Whale': '🐳',
+    'Rat': '🐀',
+    'Lizard': '🦎',
   };
   codemirrorConfig = {
     mode: {
@@ -86,8 +86,15 @@ export class AppComponent implements AfterViewInit {
       },
     }));
     this.md.use(emoji);
-    const emojiToImage = (token, idx) => twemoji.parse(token[idx].content);
+    const emojiToImage = (tokens, idx) => twemoji.parse(tokens[idx].content);
     this.md.renderer.rules.emoji = emojiToImage;
+    const originalLinkRenderer = this.md.renderer.rules.link_open || ((tokens, idx, options, env, self) => {
+      return self.renderToken(tokens, idx, options);
+    });
+    this.md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
+      tokens[idx].attrPush(['target', '_blank']);
+      return originalLinkRenderer(tokens, idx, options, env, self);
+    };
     this.timeAgo = new TimeAgo();
   }
 
@@ -103,15 +110,17 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const defaultText = dedent`# Hello!
+    const defaultText = dedent`# New document
 
     This is an _online_ **Markdown** editor :v:.
 
     Have some fun. Here you have a [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) ;).
 
+    > Made with <3 from :chile:
+
     `;
-    const editor = this.cm.instance;
-    this.menu.cm = editor;
+    const codemirrorInstance = this.cm.instance;
+    this.menu.cm = codemirrorInstance;
     const config = {
       apiKey: 'AIzaSyBK7k4vLvjRfJ2DOfzouMNAAgj9jwhQc4Y',
       authDomain: 'markdown-editor-8412c.firebaseapp.com',
@@ -120,7 +129,7 @@ export class AppComponent implements AfterViewInit {
     firebase.initializeApp(config);
 
     this.ref = this.getRef();
-    this.firepad = Firepad.fromCodeMirror(this.ref, editor, {
+    this.firepad = Firepad.fromCodeMirror(this.ref, codemirrorInstance, {
       defaultText,
     });
     const onSync = () => this.resultString = this.md.render(this.firepad.getText());
@@ -147,43 +156,38 @@ export class AppComponent implements AfterViewInit {
     });
     this.ref.child('users')
       .on('value', snapshot => {
-        const users = snapshot.val();
+        const users: Array<{ color: string }> = snapshot.val();
 
-        const colorList = Object.keys(this.colors);
-        const emojiList = Object.keys(this.emojis);
+        const colorNameList = Object.keys(this.colors);
+        const emojiNameList = Object.keys(this.emojis);
 
-        const objToNumber = obj => JSON.stringify(obj)
-          .split('')
-          .reduce((acc, c) => acc + c.charCodeAt(0), 0);
-        const colorNameFromObject = color => {
-          const number = objToNumber(color) % colorList.length;
-          return colorList[number];
-        };
-        const emojiFromColor = (color, offset = 0) => {
-          const number = (objToNumber(color) + offset) % emojiList.length;
-          return emojiList[number];
-        };
-        const imageFromEmoji = someEmoji => twemoji.parse(someEmoji);
+        const objToNumber = obj => JSON.stringify(obj).split('')
+          .map(c => c.charCodeAt(0))
+          .reduce((acc, n) => acc + n, 0);
 
-        this.users = Object.entries<{ color: string }>(users)
+        const colorNameFromObject = color =>
+          colorNameList[objToNumber(color) % colorNameList.length];
+
+        const emojiNameFromColor = (color, offset = 0) =>
+          emojiNameList[(objToNumber(color) + offset) % emojiNameList.length];
+
+        const imageFromEmoji = twemoji.parse;
+
+        this.users = Object.entries(users)
         .map(([userId], i) => {
-          const newColor = colorNameFromObject(userId);
-          const someEmoji = emojiFromColor(newColor, i);
-          return {
-            userId,
-            color: this.colors[newColor],
-            alias: imageFromEmoji(someEmoji),
-            name: newColor + ' ' + this.emojis[someEmoji],
-          };
+          const colorName = colorNameFromObject(userId);
+          const color = this.colors[colorName];
+          const emojiName = emojiNameFromColor(colorName, i);
+          const alias = imageFromEmoji(this.emojis[emojiName]);
+          const name = colorName + ' ' + emojiName;
+          return { userId, color, alias, name };
         });
       });
   }
 
   onInputClicked({ target }) {
-    if (this.title) {
-      return;
-    }
-    const firstLine = this.resultString.split('\n', 1)[0].match(/>(.*)</)[1];
+    if (this.title) { return; }
+    const firstLine = this.resultString.split('\n', 1)[0].replace(/>(.*)</, '$1');
     this.title = firstLine || 'Untitled document';
     setTimeout(() => target.setSelectionRange(0, this.title.length));
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as escapeForRegex from 'escape-string-regexp';
 
 @Component({
@@ -50,19 +50,24 @@ export class MenuComponent implements OnInit {
   }
 
   toggleList() {
-    this.genericToggle('\n1. ', '\n');
+    this.genericToggle('1. ', '');
   }
 
   toggleCode() {
-    this.genericToggle('\n```typescript\n', '\n```\n');
+    this.genericToggle('```typescript\n', '\n```');
   }
 
   toggleQuote() {
-    this.genericToggle('\n> ', '\n');
+    this.genericToggle('> ', '');
   }
 
   genericToggle(before: string, after: string) {
-    const original = this.cm.getSelection();
+    let original = this.cm.getSelection();
+    if (!original) {
+      const { line } = this.cm.getCursor();
+      original = this.cm.getLineHandle(line).text;
+      this.cm.setSelection({ line, ch: 0 }, { line, ch: original.length });
+    }
     const changed = this.formatToggle(original, before, after);
     this.cm.replaceSelection(changed, 'around');
   }

@@ -1,19 +1,16 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-menu-name',
   templateUrl: './menu-name.component.html',
   styleUrls: ['./menu-name.component.css']
 })
-export class MenuNameComponent implements OnInit {
+export class MenuNameComponent {
   @Input() name: string;
   @Input() open = false;
   @Output() hovered = new EventEmitter<[MenuNameComponent, MouseEvent]>();
   @Output() clicked = new EventEmitter<[MenuNameComponent, MouseEvent]>();
   constructor() { }
-
-  ngOnInit() {
-  }
 
   @HostListener('click', ['$event'])
   onClick(event: MouseEvent) {
