@@ -3,16 +3,14 @@ import { Title } from '@angular/platform-browser';
 import * as firebase from 'firebase/app';
 import 'firebase/database';
 import hljs from 'highlight.js';
-import TimeAgo from 'javascript-time-ago';
-import en from 'javascript-time-ago/locale/en';
 import * as MarkdownIt from 'markdown-it';
 import * as emoji from 'markdown-it-emoji';
 import { CodemirrorComponent } from 'ng2-codemirror';
+import { ago } from 'time-ago';
 import dedent from 'ts-dedent';
 import * as twemoji from 'twemoji';
 import * as Firepad from '../libs/firepad/dist/firepad';
 import { MenuComponent } from './menu/menu.component';
-TimeAgo.locale(en);
 
 @Component({
   selector: 'app-root',
@@ -70,7 +68,6 @@ export class AppComponent implements AfterViewInit {
   _title = '';
   resultString: string;
   ref: firebase.database.Reference;
-  timeAgo;
   users: Array<{ color: string, alias: string, name: string, userId: string }>;
 
   constructor(
@@ -95,7 +92,6 @@ export class AppComponent implements AfterViewInit {
       tokens[idx].attrPush(['target', '_blank']);
       return originalLinkRenderer(tokens, idx, options, env, self);
     };
-    this.timeAgo = new TimeAgo();
   }
 
   get title() { return this._title; }
@@ -106,7 +102,7 @@ export class AppComponent implements AfterViewInit {
 
   get lastModifiedAgo() {
     return this.lastModified ?
-      `Last edit was ${this.timeAgo.format(this.lastModified)}` : '';
+      `Last edit was ${ago(this.lastModified)}` : '';
   }
 
   ngAfterViewInit() {
@@ -195,6 +191,10 @@ export class AppComponent implements AfterViewInit {
   onInputBlur() {
     const { title } = this;
     this.ref.update({ metadata: { title }});
+  }
+
+  trackByUserId(index, user) {
+    return user.userId;
   }
 
   getRef() {

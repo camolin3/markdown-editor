@@ -6,7 +6,7 @@
     <p title="All changes are saved on Firebase">{{lastModifiedAgo}}</p>
   </div>
   <div class="connected-users">
-    <span *ngFor="let user of users; trackBy:user?.userId" [style.background-color]="user.color" [innerHTML]="user.alias" [title]="user.name"></span>
+    <span *ngFor="let user of users; trackBy: trackByUserId" [style.background-color]="user.color" [innerHTML]="user.alias" [title]="user.name"></span>
   </div>
 </header>
 <div class="workplace">
