@@ -18,6 +18,21 @@
     <app-menu-item (click)="toggleQuote()" iconSrc="assets/quote.svg">Quote</app-menu-item>
   </app-menu-name>
   <app-menu-name name="Help">
-    <app-menu-item>About...</app-menu-item>
+    <app-menu-item (click)="aboutModal.isDisplay = true">About...</app-menu-item>
   </app-menu-name>
 </app-menu-dropdown>
+<app-modal #aboutModal title="About..." class="about">
+  <h2>Markdown Editor</h2>
+  <h3>An online markdown editor where you can share a document using its URL.</h3>
+  <p>
+    <strong>Author: </strong>
+    <a href="https://camolin3.github.io/" title="Personal web page">Carlos Molina Avendaño</a>
+  </p>
+  <p>
+    <strong>Used libraries:</strong>
+  </p>
+  <ul>
+    <li *ngFor="let lib of packages;">{{lib[0]}}  {{lib[1]}}</li>
+  </ul>
+  <p>Powered by Firebase. <em>With <3 from Chile.</em></p>
+</app-modal>

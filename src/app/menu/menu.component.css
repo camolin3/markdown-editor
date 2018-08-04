@@ -1,0 +1,9 @@
+.about ul {
+  display: flex;
+  flex-direction: column;
+  max-height: 60vh;
+  flex-wrap: wrap;
+}
+.about ul li {
+  height: auto;
+}

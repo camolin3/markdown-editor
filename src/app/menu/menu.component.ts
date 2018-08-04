@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as escapeForRegex from 'escape-string-regexp';
+import * as packages from '../../../package.json';
 
 @Component({
   selector: 'app-menu',
@@ -9,8 +10,13 @@ import * as escapeForRegex from 'escape-string-regexp';
 export class MenuComponent implements OnInit {
   @Input() cm;
   global: Window;
+  packages;
   constructor() {
     this.global = window;
+    const { dependencies, devDependencies } = packages as {[key: string]: {[key: string]: string}};
+    this.packages = [...Object.entries(dependencies), ...Object.entries(devDependencies)]
+      .map(([name, version]) => [name, version.replace(/[^\w\.]/g, '')])
+      .sort((a, b) => a[0].localeCompare(b[0]));
   }
 
   ngOnInit() {
