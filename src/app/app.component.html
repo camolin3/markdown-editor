@@ -7,6 +7,7 @@
   </div>
   <div class="connected-users">
     <span *ngFor="let user of users; trackBy: trackByUserId" [style.background-color]="user.color" [innerHTML]="user.alias" [title]="user.name"></span>
+    <span class="user-counter" title="There are {{users?.length}} user connected right now">{{users?.length}}+</span>
   </div>
 </header>
 <div class="workplace">
