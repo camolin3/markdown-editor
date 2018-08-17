@@ -60,6 +60,7 @@ export class AppComponent implements AfterViewInit {
     autofocus: true,
     theme: 'default',
     lineWrapping: true,
+    viewportMargin: Infinity,
   };
   firepad;
   md: MarkdownIt.MarkdownIt;

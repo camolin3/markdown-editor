@@ -2,12 +2,10 @@
 :root {
   --active-color: #18c062;
   --workspace-color: #eeeeee;
-}
-
-html {
   box-sizing: border-box;
   font-family: arial,sans-serif;
   font-weight: normal;
+  width: 100vw;
 }
 *, *:before, *:after {
   box-sizing: inherit;

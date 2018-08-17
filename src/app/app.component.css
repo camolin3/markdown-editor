@@ -1,5 +1,7 @@
-:host > header {
+:host {
   --pad: 4rem;
+}
+:host > header {
   background-color: white;
   border-bottom: 1px solid #e0e0e0;
   display: grid;
@@ -66,10 +68,11 @@
 :host > header > .connected-users > span {
   background-color: grey;
   border-radius: 50%;
-  height: 2rem;
-  width: 2rem;
+  border: .1rem solid #f4f5f8;
   display: block;
   grid-row: 1;
+  height: 2rem;
+  width: 2rem;
 }
 :host > header > .connected-users > :nth-child(n + 11) {
   display: none;
@@ -134,7 +137,8 @@
 .workplace {
   background-color: var(--workspace-color);
   display: grid;
-  grid-template: "padl editor preview padr" 100vh / 5vw 1fr 1fr 5vw;
+  grid-template: "padl editor preview padr" 1fr / 5vw calc(50% - 5vw) calc(50% - 5vw) 5vw;
+  min-width: 100vh;
   overflow-x: hidden;
   padding-top: 4rem;
   width: 100%;
@@ -154,19 +158,25 @@ header:not(.is-loaded) ~ .workplace::after {
   width: 4rem;
 }
 .workplace > codemirror {
+  background-color: white;
   box-shadow: -1.5pt 0 0 0.75pt #d1d1d1, -1.5pt 0 3pt 0.75pt #ccc;
   grid-area: editor;
-  height: unset;
   margin-top: 1rem;
+  min-height: calc(100vh - var(--pad));
+  position: relative;
+}
+.workplace > codemirror::ng-deep .CodeMirror {
+  height: auto;
 }
 .workplace > output {
   --lineColor: #aaa;
-  margin-top: 1rem;
   background-color: white;
   border-left: var(--active-color) 1pt solid;
   box-shadow: 1.5pt 0 0 0.75pt #d1d1d1, 1.5pt 0 3pt 0.75pt #ccc;
   font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
   grid-area: preview;
+  margin-top: 1rem;
+  min-height: calc(100vh - var(--pad));
   padding: 0 1.25rem;
 }
 .workplace > output::ng-deep h1,
@@ -180,6 +190,7 @@ header:not(.is-loaded) ~ .workplace::after {
   background-color: #eaeaea;
   border-radius: .1rem;
   display: block;
+  overflow-x: auto;
   padding: 1rem;
 }
 .workplace > output::ng-deep blockquote {
