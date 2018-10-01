@@ -134,7 +134,7 @@
 .workplace {
   background-color: var(--workspace-color);
   display: grid;
-  grid-template: "padl editor preview padr" 100vh / 5vw 1fr 1fr 5vw;
+  grid-template: "padl editor preview padr" minmax(100vh, 1fr) / 5vw 1fr 1fr 5vw;
   overflow-x: hidden;
   padding-top: 4rem;
   width: 100%;
