@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import * as firebase from 'firebase/app';
 import 'firebase/database';
-import hljs from 'highlight.js';
+import * as hljs from 'highlight.js';
 import * as MarkdownIt from 'markdown-it';
 import * as emoji from 'markdown-it-emoji';
 import { CodemirrorComponent } from 'ng2-codemirror';
